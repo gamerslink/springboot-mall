@@ -1,5 +1,6 @@
 package com.jackyliao.springbootmall.controller;
 
+import com.jackyliao.springbootmall.constant.ProductCategory;
 import com.jackyliao.springbootmall.dto.ProductRequest;
 import com.jackyliao.springbootmall.model.Product;
 import com.jackyliao.springbootmall.service.ProductService;
@@ -18,8 +19,11 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
-       List<Product> productList = productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category, // required = false 非必填
+            @RequestParam(required = false) String search
+    ) {
+       List<Product> productList = productService.getProducts(category, search);
 
        return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
