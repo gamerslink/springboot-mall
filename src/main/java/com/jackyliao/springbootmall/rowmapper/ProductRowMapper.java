@@ -1,5 +1,6 @@
 package com.jackyliao.springbootmall.rowmapper;
 
+import com.jackyliao.springbootmall.constant.ProductCategory;
 import com.jackyliao.springbootmall.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -14,7 +15,21 @@ public class ProductRowMapper implements RowMapper<Product> {
 
         product.setProductId(resultSet.getInt("product_id"));
         product.setProductName(resultSet.getString("product_name"));
-        product.setCategory(resultSet.getString("category"));
+
+        /*
+        // String 類型跟 Enum 類型的轉換
+        String categoryStr = resultSet.getString("category"); // 用 String 類型變數儲存 resultSet 資料庫取出的值
+        // String 轉 Enum
+        // 使用Enum類型的valueOf，根據傳入字串的值，找尋對應中的 ProductCategory 中的固定值，回傳到 category 裡面
+        ProductCategory category = ProductCategory.valueOf(categoryStr);
+        product.setCategory(category);
+        */
+
+        // 將上方程式改寫，直接將資料庫取出來的 String 類型的字串，去轉換成 ProductCategory 的 Enum 值，然後把它傳入到 set 方法做設定
+        product.setCategory(ProductCategory.valueOf(resultSet.getString("category")));
+
+
+
         product.setImageUrl(resultSet.getString("image_url"));
         product.setPrice(resultSet.getInt("price"));
         product.setStock(resultSet.getInt("stock"));
