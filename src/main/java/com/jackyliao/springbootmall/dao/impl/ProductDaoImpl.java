@@ -1,7 +1,7 @@
 package com.jackyliao.springbootmall.dao.impl;
 
-import com.jackyliao.springbootmall.constant.ProductCategory;
 import com.jackyliao.springbootmall.dao.ProductDao;
+import com.jackyliao.springbootmall.dto.ProductQueryParams;
 import com.jackyliao.springbootmall.dto.ProductRequest;
 import com.jackyliao.springbootmall.model.Product;
 import com.jackyliao.springbootmall.rowmapper.ProductRowMapper;
@@ -104,7 +104,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT product_id, product_name, category, image_url, price, " +
                 "stock, description, " +
                 "created_date, last_modified_date " +
@@ -112,14 +112,14 @@ public class ProductDaoImpl implements ProductDao {
 
         Map<String, Object> map = new HashMap<>();
 
-        if (category != null) {
+        if (productQueryParams.getCategory() != null) {
             sql = sql + " AND category = :category";
-            map.put("category", category.name()); // 前端傳來的值 category，name()方法 enum 轉換成字串，字串值在加到 map
+            map.put("category", productQueryParams.getCategory().name()); // 前端傳來的值 category，name()方法 enum 轉換成字串，字串值在加到 map
         }
 
-        if (search != null) {
+        if (productQueryParams.getSearch() != null) {
             sql = sql + " AND product_name LIKE :search";
-            map.put("search", "%" + search + "%");
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
 
 
