@@ -41,23 +41,32 @@ public class ProductController {
     public ResponseEntity<Product> updateProduct(@PathVariable Integer productId,
                                                  @RequestBody @Valid ProductRequest productRequest) {
 
-        /**
-         * 檢查 product 是否存在
-         * */
+        // 檢查 product 是否存在
         Product product = productService.getProductById(productId);
 
         if ( product == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        /**
-         * 修改商品的數據
-         * */
+        // 修改商品的數據
         productService.updateProduct(productId, productRequest);
 
         Product updateProduct = productService.getProductById(productId); // 取得更新後的商品數據
 
         return ResponseEntity.status(HttpStatus.OK).body(updateProduct);
+    }
+
+
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable Integer productId) {
+
+        // 商品存在，成功刪除，商品本來就不存在
+        // 前端所在意的不是刪除的動作，是一個結果，商品確定不存在了
+        productService.deleteProductById(productId);
+
+        // 返回成功 204 NO_CONTENT
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 
 
