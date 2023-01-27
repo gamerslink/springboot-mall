@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ProductServiceImp implements ProductService {
+public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private ProductDao productDao;
